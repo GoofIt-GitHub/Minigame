@@ -24,7 +24,7 @@ public class GameArena {
     private GameCountdown gameCountdown;
     private Game game;
 
-    /*
+    /**
      initialize the attributes & instantiate the objects above. Also set the state of the game to
      recruiting once the constructor is called
      */
