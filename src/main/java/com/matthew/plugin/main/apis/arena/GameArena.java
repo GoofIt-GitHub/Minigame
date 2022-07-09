@@ -14,9 +14,6 @@ import java.util.UUID;
 
 public class GameArena {
 
-    /**
-     Class attributes & un-instantiated objects
-     */
     private int id;
     private ArrayList<UUID> players;
     private Location spawn;
@@ -25,8 +22,10 @@ public class GameArena {
     private Game game;
 
     /**
-     initialize the attributes & instantiate the objects above. Also set the state of the game to
-     recruiting once the constructor is called
+     * Construct a new GameArena with an id specific to the arena
+     * Once a game arena is constructed it is to be set to recruiting by default
+     *
+     * @param id - id referring to the arena
      */
     public GameArena(int id) {
         this.id = id;
@@ -37,34 +36,39 @@ public class GameArena {
         game = new Game(this);
     }
 
-    /*
-     @return id
+
+    /**
+     * Get the id of the game arena
+     *
+     * @return the id of the game arena
      */
     public int getID() { return id; }
 
-    /*
-     @return all players currently in the game
+    /**
+     * Get the players that are currently in the game's arena
+     *
+     * @return the list of players in the game arena
      */
     public List<UUID> getPlayers() { return players; }
 
-    /*
-     basic logic to start the game by having an arena method to run the method start in game class
+    /**
+     * Start the game by calling the start method located in the Game class
      */
     public void start() {
         game.start();
     }
 
-    /*
-     arena method used to run the gameForceStart method in the game class.
+    /**
+     * Start the game before the countdown ends by using the gameForceStart method located in the Game class
      */
     public void forceStart() { game.gameForceStart(); }
 
-    /*
-     basic logic to reset the arena by
-      - Teleporting all players in the players list to the lobbyspawn
-      - resetting the gamestate for the arena to recruiting so players can join again
-      - clearing the arraylist (which should have already been cleared before this point)
-      - recalling the constructors of countdown and game to reset as well
+    /**
+     * basic logic to reset the arena by
+     * - Teleporting all players in the players list to the lobbyspawn
+     * - resetting the gamestate for the arena to recruiting so players can join again
+     * - clearing the arraylist (which should have already been cleared before this point)
+     * - recalling the constructors of countdown and game to reset as well
      */
     public void reset() {
         for (UUID uuid : players) {
@@ -77,9 +81,9 @@ public class GameArena {
         game = new Game(this);
     }
 
-    /*
-     Method that will reinitialize the game countdown and game class to set the game back to recruiting without
-     errors
+    /**
+      * Set the arena back to recruiting by reinitializing the game countdown and game class to set the game back to recruiting without
+      * errors
      */
     public void setRecruiting() {
         state = GameState.RECRUITING;
@@ -87,8 +91,9 @@ public class GameArena {
         game = new Game(this);
     }
 
-    /*
-     send a message to all players in the players arraylist based on their uuid
+    /**
+     * Send a message to everyone in the game arena
+     * @param message - message to display in chat to the players
      */
     public void sendMessage(String message) {
         for(UUID uuid : players) {
@@ -96,11 +101,13 @@ public class GameArena {
         }
     }
 
-    /*
-     - add a player to the players arraylist > teleport them to the arena spawn > send a message
-       to the other players in the arraylist that the specified player has joined
-     - run the countdown begin method if the minimum player count to begin the countdown has
-       been reached
+    /**
+     * Add a player to the arena by adding a player to the players arraylist > teleport them to the arena spawn > send a message
+     * to the other players in the arraylist that the specified player has joined >
+     * run the countdown begin method if the minimum player count to begin the countdown has
+     * been reached
+     *
+     * @param player - player that is being added to the game arena
      */
     public void addPlayer(Player player) {
         players.add(player.getUniqueId());
@@ -112,13 +119,16 @@ public class GameArena {
         }
     }
 
-    /*
-     - remove a player from the players arraylist > teleport them back to the lobby spawn > announce to
-       the other players in the arraylist that the specified player has quit
-     - if the player size ends up becoming less than the required players amount for a countdown to start
-       then run the reset method to set the game back to recruiting and look for more players
-     - if the game is live and all of the players decide to quit reset the game back to recruiting
-       and look for more players
+    /**
+     * Remove a player from the game arena:
+     * - remove a player from the players arraylist > teleport them back to the lobby spawn > announce to
+     *   the other players in the arraylist that the specified player has quit
+     * - if the player size ends up becoming less than the required players amount for a countdown to start
+     *   then run the reset method to set the game back to recruiting and look for more players
+     * - if the game is live and all of the players decide to quit reset the game back to recruiting
+     *   and look for more players
+     *
+     * @param player - player that is being removed from the arena
      */
     public void removePlayer(Player player) {
         players.remove(player.getUniqueId());
@@ -130,18 +140,24 @@ public class GameArena {
         }
     }
 
-    /*
-     @return the enum [recruiting, live, countdown] that refers to the state the game is currently in
+    /**
+     * Get the state the game is currently in [Live, countdown, recruiting]
+     *
+     * @return the gamestate of the arena
      */
     public GameState getState() { return state; }
 
-    /*
-     set the state of a game to the specified enum [recruiting, live, countdown]
+    /**
+     * Set the game state to Live, countdown, or recruiting
+     *
+     * @param state - state the game arena is to be set to
      */
     public void setState(GameState state) { this.state = state; }
 
-    /*
-     @return the game object for accessing the data types & subroutines/methods inside
+    /**
+     * Get the game specific to the arena
+     *
+     * @return the game
      */
     public Game getGame() { return game; }
 }
